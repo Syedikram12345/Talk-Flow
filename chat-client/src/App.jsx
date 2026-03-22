@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./components/Header";
 import Modes from "./components/Modes";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
-    <div className="min-h-screen min-w-screen bg-[#FFAFCC]">
+    <div className="min-h-screen min-w-screen  bg-[#FFAFCC]">
       <Header />
-      <div className="block">
+      <div className="flex flex-col-reverse sm:flex-row">
         <Modes />
+
+        <div className="flex-1">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
