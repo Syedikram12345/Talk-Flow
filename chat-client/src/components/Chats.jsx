@@ -3,11 +3,16 @@ import React, { useState } from "react";
 function Chats() {
   const [selected, setSelected] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
-  const chatList = [
-    { name: "Ikram", lastMsg: "You: Hello " },
-    { name: "Ateeb", lastMsg: "Bro where are you?" },
-    { name: "Aliza", lastMsg: "Okay " },
-  ];
+
+  const [chatList, setChatList] = useState([
+    { name: "Ikram", lastMsg: "You: Hello ", uniqueId: 100 },
+    { name: "Ateeb", lastMsg: "Bro where are you?", uniqueId: 101 },
+    { name: "Aliza", lastMsg: "Okay ", uniqueId: 102 },
+  ]);
+
+  function addChat(newChat) {
+    setChatList((prev) => [...prev, newChat]);
+  }
 
   return (
     <div

@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Modes from "./components/Modes";
 import { Outlet } from "react-router-dom";
 
-function App() {
+function Layout() {
   return (
     <div className="min-h-screen min-w-screen  bg-[#FFAFCC]">
       <Header />
@@ -18,4 +18,4 @@ function App() {
   );
 }
 
-export default App;
+export default Layout;

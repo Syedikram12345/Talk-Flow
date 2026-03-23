@@ -3,13 +3,13 @@ import { createRoot } from "react-dom/client";
 import Chats from "./components/Chats.jsx";
 import AddChat from "./components/AddChat.jsx";
 import "./index.css";
-import App from "./App.jsx";
+import Layout from "./Layout.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Layout />,
     children: [
       {
         path: "",
