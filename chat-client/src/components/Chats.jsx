@@ -1,24 +1,16 @@
 import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 function Chats() {
   const [selected, setSelected] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
-
-  const [chatList, setChatList] = useState([
-    { name: "Ikram", lastMsg: "You: Hello ", uniqueId: 100 },
-    { name: "Ateeb", lastMsg: "Bro where are you?", uniqueId: 101 },
-    { name: "Aliza", lastMsg: "Okay ", uniqueId: 102 },
-  ]);
-
-  function addChat(newChat) {
-    setChatList((prev) => [...prev, newChat]);
-  }
+  const { chatList } = useOutletContext();
 
   return (
     <div
       className={`h-screen rounded-tl-xl bg-[#FFC8DD] text-gray-900 w-full mb-1 flex`}
     >
-      <div className="min-w-[25vw]">
+      <div className="min-w-[25vw] overflow-y-auto">
         <div className="p-4 text-xl font-semibold border-t border-b   border-gray-600">
           Chats
         </div>

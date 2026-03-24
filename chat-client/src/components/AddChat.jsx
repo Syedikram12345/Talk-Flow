@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 function AddChat() {
+  const { addChat } = useOutletContext();
   const [chat, setChat] = useState({
     name: "",
+    lastMsg: "",
     uniqueId: "",
   });
   function handleChange(event) {
@@ -12,6 +15,14 @@ function AddChat() {
         ...prev,
         [name]: value,
       };
+    });
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    addChat(chat);
+    setChat({
+      name: "",
+      uniqueId: "",
     });
   }
   return (
@@ -30,6 +41,7 @@ function AddChat() {
               type="text"
               className="w-full px-3 py-2 bg-white text-black rounded-lg border border-gray-300 focus:border-black focus:ring-2 focus:ring-black outline-none"
               placeholder="Enter chat name..."
+              value={chat.name}
             />
           </div>
 
@@ -41,10 +53,12 @@ function AddChat() {
               type="text"
               className="w-full px-3 py-2 bg-white text-black rounded-lg border border-gray-300 focus:border-black focus:ring-2 focus:ring-black outline-none"
               placeholder="Enter unique ID..."
+              value={chat.uniqueId}
             />
           </div>
 
           <button
+            onClick={handleSubmit}
             type="submit"
             className="w-full bg-black text-white py-2 rounded-lg font-semibold hover:bg-gray-900 transition"
           >
