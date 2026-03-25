@@ -39,7 +39,9 @@ function Chats() {
             <div className="p-4 border-b border-gray-700 sticky top-0 z-10 flex justify-between bg-gray-800">
               <div>
                 <h2 className="font-semibold text-lg">{currentChat}</h2>
-                <p className="text-xs text-gray-400">Online</p>
+                <p className="text-xs text-gray-400">
+                  ID : {chatList[selected].uniqueId}
+                </p>
               </div>
               <button
                 onClick={() => {
