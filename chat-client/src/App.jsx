@@ -19,7 +19,7 @@ function App() {
 
     const exists = chatList.some((c) => c.uniqueId === chat.uniqueId);
     if (exists) {
-      toast.error("User already exists!");
+      toast.error("Chat with the same unique ID already exists!");
       return;
     }
 
@@ -32,19 +32,25 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen min-w-screen bg-gray-900 text-gray-100">
+    <div className="h-screen w-screen flex flex-col bg-gray-900 text-gray-100">
+      {/* Header */}
       <Header />
-      <div className="flex flex-col-reverse sm:flex-row">
-        <div className="relative">
-          <Modes />
 
-          <div className="hidden sm:block absolute top-0 right-0 h-full w-1px bg-gray-700" />
+      {/* Main content */}
+      <div className="flex flex-1 min-h-0">
+        {/* Sidebar / Modes */}
+        <div className="relative shrink-0 h-full overflow-y-auto">
+          <Modes />
+          {/* Vertical divider */}
+          <div className="hidden sm:block absolute top-0 right-0 h-full w-px bg-gray-700" />
         </div>
 
-        <div className="flex-1">
+        {/* Chat / Page content */}
+        <div className="flex-1 h-full overflow-y-auto">
           <Outlet context={{ chatList, addChat, deleteChat }} />
         </div>
       </div>
+
       <Toaster position="top-right" />
     </div>
   );
