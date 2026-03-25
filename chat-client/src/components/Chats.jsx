@@ -4,7 +4,7 @@ import { useOutletContext } from "react-router-dom";
 function Chats() {
   const [selected, setSelected] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
-  const { chatList } = useOutletContext();
+  const { chatList, deleteChat } = useOutletContext();
 
   return (
     <div
@@ -34,9 +34,23 @@ function Chats() {
       {selected !== null ? (
         <div className="min-w-[70vw]">
           <div className="h-screen w-full bg-white flex flex-col">
-            <div className="p-4 border-b border-gray-300 bg-white sticky top-0 z-10">
-              <h2 className="font-semibold text-lg">{currentChat}</h2>
-              <p className="text-xs text-gray-500">Online</p>
+            <div className="p-4 border-b border-gray-300 bg-white sticky top-0 z-10 flex justify-between">
+              <div>
+                <h2 className="font-semibold text-lg">{currentChat}</h2>
+                <p className="text-xs text-gray-500">Online</p>
+              </div>
+              <div>
+                <button
+                  onClick={() => {
+                    deleteChat(chatList[selected].uniqueId);
+                    setSelected(null);
+                    setCurrentChat(null);
+                  }}
+                  className="bg-red-400 text-white py-2 px-1 rounded-2xl"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">

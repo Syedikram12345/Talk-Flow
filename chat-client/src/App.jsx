@@ -1,20 +1,33 @@
+import { useEffect } from "react";
 import React, { useState } from "react";
 import Header from "./components/Header";
 import Modes from "./components/Modes";
 import { Outlet } from "react-router-dom";
 
 function App() {
-  const [chatList, setChatList] = useState([
-    { name: "Ikram", lastMsg: "You: Hello ", uniqueId: 100 },
-    { name: "Ateeb", lastMsg: "Bro where are you?", uniqueId: 101 },
-    { name: "Aliza", lastMsg: "Okay ", uniqueId: 102 },
-  ]);
+  const [chatList, setChatList] = useState(() => {
+    const saved = localStorage.getItem("chatList");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("chatList", JSON.stringify(chatList));
+  }, [chatList]);
 
   function addChat(chat) {
     if (chat.name === "" || chat.uniqueId === "") {
       return;
     }
     setChatList((prev) => [...prev, chat]);
+  }
+
+  function deleteChat(uniqueId) {
+    console.log("deleted");
+    setChatList((prev) => {
+      return prev.filter((chat) => {
+        return chat.uniqueId !== uniqueId;
+      });
+    });
   }
 
   return (
@@ -24,7 +37,7 @@ function App() {
         <Modes />
 
         <div className="flex-1">
-          <Outlet context={{ chatList, addChat }} />
+          <Outlet context={{ chatList, addChat, deleteChat }} />
         </div>
       </div>
     </div>
