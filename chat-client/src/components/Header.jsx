@@ -1,15 +1,21 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRocketchat } from "@fortawesome/free-brands-svg-icons";
+import { faUser, faBell } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
   return (
-    <div>
-      <div className="flex items-center justify-start gap-2 ml-1">
-        <FontAwesomeIcon icon={faRocketchat} />
-        <p className="text-sm">Talk flow</p>
+    <header className="w-full bg-gray-800 text-gray-100 p-4 flex justify-between items-center shadow-md">
+      <h1 className="text-2xl font-bold">Chat App</h1>
+      <div className="flex items-center gap-4">
+        <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-100 transition">
+          <FontAwesomeIcon icon={faBell} />
+        </button>
+        <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-100 transition">
+          <FontAwesomeIcon icon={faUser} />
+        </button>
       </div>
-    </div>
+    </header>
   );
 }
+
 export default Header;
