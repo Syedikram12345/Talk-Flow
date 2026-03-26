@@ -5,7 +5,6 @@ import {
   faComments,
   faPhone,
   faPlus,
-  faUser,
   faGear,
   faSquarePollVertical,
 } from "@fortawesome/free-solid-svg-icons";
@@ -14,12 +13,12 @@ import { NavLink } from "react-router-dom";
 function Modes() {
   const modes = [
     { icon: faEnvelope, label: "Messages", to: "/" },
-    { icon: faComments, label: "Status", to: "/status" },
-    { icon: faPhone, label: "Calls", to: "/calls" },
+    // { icon: faComments, label: "Status", to: "/status" },
+    // { icon: faPhone, label: "Calls", to: "/calls" },
     { icon: faPlus, label: "Add Chat", to: "/add-chat" },
-    { icon: faUser, label: "Profile", to: "/profile" },
+
     { icon: faSquarePollVertical, label: "Feedback", to: "/feedback" },
-    { icon: faGear, label: "Settings", to: "/settings" },
+    // { icon: faGear, label: "Settings", to: "/settings" },
   ];
 
   return (

@@ -49,7 +49,6 @@ function App() {
       </div>
 
       <Toaster position="top-right" />
-      {/* <AlertDialogAction /> */}
     </div>
   );
 }
