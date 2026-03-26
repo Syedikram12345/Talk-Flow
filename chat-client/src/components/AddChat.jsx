@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { toast } from "sonner";
 
 function AddChat() {
   const { addChat } = useOutletContext();
@@ -12,6 +13,7 @@ function AddChat() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    toast.success("Chat added");
     addChat(chat);
     setChat({ name: "", uniqueId: "" });
   }

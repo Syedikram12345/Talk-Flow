@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Modes from "./components/Modes";
 import { Outlet } from "react-router-dom";
 import { toast, Toaster } from "sonner";
+import { AlertDialogAction } from "./components/ui/alert-dialog";
 
 function App() {
   const [chatList, setChatList] = useState(() => {
@@ -33,25 +34,22 @@ function App() {
 
   return (
     <div className="h-screen w-screen flex flex-col bg-gray-900 text-gray-100">
-      {/* Header */}
       <Header />
 
-      {/* Main content */}
       <div className="flex flex-1 min-h-0">
-        {/* Sidebar / Modes */}
         <div className="relative shrink-0 h-full overflow-y-auto">
           <Modes />
-          {/* Vertical divider */}
+
           <div className="hidden sm:block absolute top-0 right-0 h-full w-px bg-gray-700" />
         </div>
 
-        {/* Chat / Page content */}
         <div className="flex-1 h-full overflow-y-auto">
           <Outlet context={{ chatList, addChat, deleteChat }} />
         </div>
       </div>
 
       <Toaster position="top-right" />
+      {/* <AlertDialogAction /> */}
     </div>
   );
 }

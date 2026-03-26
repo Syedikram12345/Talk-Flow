@@ -1,5 +1,19 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Trash2Icon } from "lucide-react";
 
 function Chats() {
   const [selected, setSelected] = useState(null);
@@ -43,15 +57,38 @@ function Chats() {
                   ID : {chatList[selected].uniqueId}
                 </p>
               </div>
-              <button
-                onClick={() => {
-                  deleteChat(chatList[selected].uniqueId);
-                  setSelected(null);
-                  setCurrentChat(null);
-                }}
-                className="bg-red-500 text-white py-1 px-2 rounded-xl hover:bg-red-600 transition"
-              >
-                Delete
+              <button className="bg-red-500 hover:bg-red-600 rounded-3xl">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive">Delete Chat</Button>
+                  </AlertDialogTrigger>
+
+                  <AlertDialogContent size="sm">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete chat?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently delete this chat conversation.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                      <AlertDialogCancel variant="outline">
+                        Cancel
+                      </AlertDialogCancel>
+
+                      <AlertDialogAction
+                        variant="outline"
+                        onClick={() => {
+                          deleteChat(chatList[selected].uniqueId);
+                          setSelected(null);
+                          setCurrentChat(null);
+                        }}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </button>
             </div>
 
