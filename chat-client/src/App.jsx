@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Modes from "./components/Modes";
 import { Outlet } from "react-router-dom";
 import { toast, Toaster } from "sonner";
-import { AlertDialogAction } from "./components/ui/alert-dialog";
+import SignUp from "./components/SignUp";
 
 function App() {
   const [chatList, setChatList] = useState(() => {
@@ -47,7 +47,6 @@ function App() {
           <Outlet context={{ chatList, addChat, deleteChat }} />
         </div>
       </div>
-
       <Toaster position="top-right" />
     </div>
   );

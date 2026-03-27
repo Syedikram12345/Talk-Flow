@@ -8,21 +8,26 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Trash2Icon } from "lucide-react";
 
 function Chats() {
   const [selected, setSelected] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const { chatList, deleteChat } = useOutletContext();
+  const [isMobileView, setIsMobileView] = useState(false);
 
   return (
     <div className="h-full flex w-full text-gray-100">
-      <div className="min-w-[25vw] h-full overflow-y-auto bg-gray-800 border-t-2 border-blue-500">
+      <div
+        className={`
+    min-w-full sm:min-w-[25vw] h-[90%] sm:h-full overflow-y-auto bg-gray-800 border-t-2 border-blue-500 
+    ${isMobileView ? "hidden" : "block"} 
+    sm:block
+  `}
+      >
         <div className="p-4 text-xl font-semibold border-b border-gray-700">
           Chats
         </div>
@@ -33,6 +38,9 @@ function Chats() {
               onClick={() => {
                 setSelected(index);
                 setCurrentChat(chat.name);
+                if (window.innerWidth < 768) {
+                  setIsMobileView(true);
+                }
               }}
               className={`p-4 border-b border-gray-700 hover:bg-gray-700 cursor-pointer ${
                 selected === index
@@ -47,10 +55,18 @@ function Chats() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col h-full border-t-4 border-blue-500 bg-gray-900">
+      <div className="flex-1 flex flex-col h-[90%] sm:h-full border-t-4 border-blue-500 bg-gray-900">
         {selected !== null ? (
           <>
             <div className="p-4 border-b border-gray-700 sticky top-0 z-10 flex justify-between bg-gray-800">
+              {isMobileView && (
+                <button
+                  onClick={() => setIsMobileView(false)}
+                  className="text-white text-3xl sm:hidden"
+                >
+                  ⬅
+                </button>
+              )}
               <div>
                 <h2 className="font-semibold text-lg">{currentChat}</h2>
                 <p className="text-xs text-gray-400">

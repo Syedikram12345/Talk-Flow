@@ -15,7 +15,7 @@ function Feedback() {
   }
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="w-[40%] h-[90%] bg-gray-800 rounded-2xl p-6 shadow-md">
+      <div className=" w-full max-w-md h-[80%] sm:h-[90%] bg-gray-800 rounded-2xl p-6 shadow-md">
         <h1 className="font-extrabold text-center text-3xl mb-6 text-white">
           We value your opinion
         </h1>

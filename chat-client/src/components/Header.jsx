@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faBell } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 function Header() {
   return (
@@ -10,9 +11,11 @@ function Header() {
         <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-100 transition">
           <FontAwesomeIcon icon={faBell} />
         </button>
-        <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-100 transition">
-          <FontAwesomeIcon icon={faUser} />
-        </button>
+        <NavLink to={"/profile"}>
+          <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-100 transition">
+            <FontAwesomeIcon icon={faUser} />
+          </button>
+        </NavLink>
       </div>
     </header>
   );

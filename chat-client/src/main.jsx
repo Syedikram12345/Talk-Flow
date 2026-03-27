@@ -6,8 +6,14 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import Feedback from "./components/Feedback.jsx";
+import Profile from "./components/Profile.jsx";
+import SignUp from "./components/SignUp.jsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
   {
     path: "/",
     element: <App />,
@@ -23,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "feedback",
         element: <Feedback />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },
