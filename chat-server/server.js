@@ -42,7 +42,8 @@ app.get("/api/chats", async (req, res) => {
 app.delete("/api/delete-chat/:uniqueId", async (req, res) => {
   // console.log("delete called");
 
-  const uniqueId = req.params;
+  const uniqueId = req.params.uniqueId;
+
   try {
     await db.query("DELETE FROM chats WHERE unique_id = $1", [uniqueId]);
     res.json({ message: "Chat deleted successfully" });

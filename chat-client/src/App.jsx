@@ -39,9 +39,7 @@ function App() {
 
   async function deleteChat(unique_id) {
     try {
-      await axios.delete(
-        `http://localhost:3000/api/delete-chat/:1${unique_id}`,
-      );
+      await axios.delete(`http://localhost:3000/api/delete-chat/${unique_id}`);
       setChatList((prev) =>
         prev.filter((chat) => chat.unique_id !== unique_id),
       );
