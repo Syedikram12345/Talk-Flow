@@ -32,9 +32,9 @@ function App() {
       "http://localhost:3000/api/add-chat",
       chat,
     );
-    console.log(response.data);
+    // console.log(response.data);
 
-    setChatList((prev) => [...prev, chat]);
+    setChatList((prev) => [response.data, ...prev]);
   }
 
   async function deleteChat(unique_id) {
