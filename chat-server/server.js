@@ -1,0 +1,44 @@
+import express from "express";
+import cors from "cors";
+import db from "./db.js";
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.post("/api/add-chat", async (req, res) => {
+  console.log("POST /api/add-chat CALLED", req.body);
+  const { name, uniqueId } = req.body;
+
+  if (!name || !uniqueId) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
+
+  try {
+    const result = await db.query(
+      "INSERT INTO chats(name, unique_id) values($1 ,$2) RETURNING * ",
+      [name, uniqueId],
+    );
+    console.log(result.rows);
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "database error" });
+  }
+});
+
+app.get("/api/chats", async (req, res) => {
+  console.log("GET /api/chats CALLED");
+  try {
+    const result = await db.query("SELECT * FROM chats order by id DESC");
+    res.json(result.rows);
+  } catch (err) {
+    console.log("DB ERROR IN GET:", err);
+    res.status(500).json({ error: "database error" });
+  }
+});
+
+app.listen(3000, () => {
+  console.log("listening");
+});
