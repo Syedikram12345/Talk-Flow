@@ -1,4 +1,23 @@
+<<<<<<< HEAD
 # dependencies
+=======
+<<<<<<< HEAD
+node_modules
+=======
+# Client
+chat-client/node_modules/
+chat-client/.env
+chat-client/.env.*
+chat-client/dist/
+
+# Server
+chat-server/node_modules/
+chat-server/.env
+chat-server/.env.*
+chat-server/build/
+
+# Global ignores
+>>>>>>> f98beb37ae6c8dabe817fb217437c8779ad3795c
 node_modules/
 
 # local env files
@@ -19,6 +38,10 @@ pnpm-debug.log*
 # editor configs
 .DS_Store
 *.log
+<<<<<<< HEAD
 
 # vite/react files
 .vite/
+=======
+>>>>>>> 5489384547a14c4a645248013e032351d7b3cdef
+>>>>>>> f98beb37ae6c8dabe817fb217437c8779ad3795c
