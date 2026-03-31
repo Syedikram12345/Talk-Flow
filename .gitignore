@@ -1,47 +1,46 @@
-<<<<<<< HEAD
-# dependencies
-=======
-<<<<<<< HEAD
-node_modules
-=======
-# Client
-chat-client/node_modules/
-chat-client/.env
-chat-client/.env.*
-chat-client/dist/
-
-# Server
-chat-server/node_modules/
-chat-server/.env
-chat-server/.env.*
-chat-server/build/
-
-# Global ignores
->>>>>>> f98beb37ae6c8dabe817fb217437c8779ad3795c
+# Dependencies
 node_modules/
+.pnp
+.pnp.js
 
-# local env files
-.env
-.env.local
-.env.*.local
-
-# build output
+# Build outputs
 dist/
+dist-ssr/
 build/
 
-# logs
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# editor configs
+# Editor & OS files
+.vscode/
+.idea/
 .DS_Store
-*.log
-<<<<<<< HEAD
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
-# vite/react files
-.vite/
-=======
->>>>>>> 5489384547a14c4a645248013e032351d7b3cdef
->>>>>>> f98beb37ae6c8dabe817fb217437c8779ad3795c
+# Cache
+.cache/
+.eslintcache
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# Misc
+*.local
+.npmrc
