@@ -20,9 +20,9 @@ function App() {
   // console.log("chatList : ", chatList);
 
   async function addChat(chat) {
-    if (chat.name === "" || chat.uniqueId === "") return;
+    if (chat.name === "" || chat.unique_id === "") return;
 
-    const exists = chatList.some((c) => c.uniqueId === chat.uniqueId);
+    const exists = chatList.some((c) => c.unique_id === chat.unique_id);
     if (exists) {
       toast.error("Chat with the same unique ID already exists!");
       return;
@@ -37,9 +37,18 @@ function App() {
     setChatList((prev) => [...prev, chat]);
   }
 
-  function deleteChat(uniqueId) {
-    setChatList((prev) => prev.filter((chat) => chat.uniqueId !== uniqueId));
-    toast.success("Chat deleted successfully!");
+  async function deleteChat(unique_id) {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/delete-chat/:1${unique_id}`,
+      );
+      setChatList((prev) =>
+        prev.filter((chat) => chat.unique_id !== unique_id),
+      );
+      toast.success("Chat deleted successfully!");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (

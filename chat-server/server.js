@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/api/add-chat", async (req, res) => {
-  console.log("POST /api/add-chat CALLED", req.body);
+  // console.log("POST /api/add-chat CALLED", req.body);
   const { name, uniqueId } = req.body;
 
   if (!name || !uniqueId) {
@@ -29,12 +29,25 @@ app.post("/api/add-chat", async (req, res) => {
 });
 
 app.get("/api/chats", async (req, res) => {
-  console.log("GET /api/chats CALLED");
+  // console.log("GET /api/chats CALLED");
   try {
     const result = await db.query("SELECT * FROM chats order by id DESC");
     res.json(result.rows);
   } catch (err) {
     console.log("DB ERROR IN GET:", err);
+    res.status(500).json({ error: "database error" });
+  }
+});
+
+app.delete("/api/delete-chat/:uniqueId", async (req, res) => {
+  // console.log("delete called");
+
+  const uniqueId = req.params;
+  try {
+    await db.query("DELETE FROM chats WHERE unique_id = $1", [uniqueId]);
+    res.json({ message: "Chat deleted successfully" });
+  } catch (err) {
+    console.log(err);
     res.status(500).json({ error: "database error" });
   }
 });
