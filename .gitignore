@@ -1,0 +1,18 @@
+# Client
+chat-client/node_modules/
+chat-client/.env
+chat-client/.env.*
+chat-client/dist/
+
+# Server
+chat-server/node_modules/
+chat-server/.env
+chat-server/.env.*
+chat-server/build/
+
+# Global ignores
+node_modules/
+.env
+.env.*
+.DS_Store
+*.log
