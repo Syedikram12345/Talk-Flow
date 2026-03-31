@@ -18,6 +18,34 @@ function Chats() {
   const [currentChat, setCurrentChat] = useState(null);
   const { chatList, deleteChat } = useOutletContext();
   const [isMobileView, setIsMobileView] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [text, setText] = useState("");
+
+  function sendMessage() {
+    if (!text.trim()) return;
+
+    const newMsg = {
+      id: crypto.randomUUID(),
+      text,
+      sender: "me",
+    };
+    setMessages((prev) => [...prev, newMsg]);
+    setText("");
+
+    setTimeout(() => {
+      const reply = {
+        id: crypto.randomUUID(),
+        text: "Bro I received your message!",
+        sender: { currentChat },
+      };
+
+      setMessages((prev) => [...prev, reply]);
+    }, 1000);
+  }
+
+  const deleteSingleMessage = (id) => {
+    setMessages((prev) => prev.filter((m) => m.id !== id));
+  };
 
   return (
     <div className="h-full flex w-full text-gray-100">
@@ -42,7 +70,7 @@ function Chats() {
                   setIsMobileView(true);
                 }
               }}
-              className={`p-4 border-b border-gray-700 hover:bg-gray-700 cursor-pointer ${
+              className={`p-4 border-b border-gray-700 hover:bg-gray-600 cursor-pointer ${
                 selected === index
                   ? "bg-gray-700 border-l-4 border-blue-500"
                   : ""
@@ -70,61 +98,78 @@ function Chats() {
               <div>
                 <h2 className="font-semibold text-lg">{currentChat}</h2>
                 <p className="text-xs text-gray-400">
-                  ID : {chatList[selected].uniqueId}
+                  ID : {chatList[selected].unique_id}
                 </p>
               </div>
-              <button className="bg-red-500 hover:bg-red-600 rounded-3xl">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive">Delete Chat</Button>
-                  </AlertDialogTrigger>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="rounded-3xl">
+                    Delete Chat
+                  </Button>
+                </AlertDialogTrigger>
 
-                  <AlertDialogContent size="sm">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Delete chat?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will permanently delete this chat conversation.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
+                <AlertDialogContent size="sm">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete chat?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will permanently delete this chat conversation.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
 
-                    <AlertDialogFooter>
-                      <AlertDialogCancel variant="outline">
-                        Cancel
-                      </AlertDialogCancel>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel variant="outline">
+                      Cancel
+                    </AlertDialogCancel>
 
-                      <AlertDialogAction
-                        variant="outline"
-                        onClick={() => {
-                          deleteChat(chatList[selected].uniqueId);
-                          setSelected(null);
-                          setCurrentChat(null);
-                        }}
-                      >
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </button>
+                    <AlertDialogAction
+                      variant="outline"
+                      onClick={() => {
+                        deleteChat(chatList[selected].uniqueId);
+                        setSelected(null);
+                        setCurrentChat(null);
+                      }}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              <div className="max-w-[70%] bg-gray-700 p-3 rounded-xl shadow-sm border border-gray-600">
-                Hey! How are you?
-              </div>
-
-              <div className="max-w-[70%] ml-auto bg-blue-500 text-white p-3 rounded-xl shadow-sm">
-                I'm good bro, working on my chat app!
-              </div>
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`max-w-[70%] p-3 rounded-xl shadow-sm ${
+                    msg.sender === "me"
+                      ? "ml-auto bg-blue-500 text-white relative group"
+                      : "bg-gray-700 border border-gray-600"
+                  }`}
+                >
+                  {msg.text}
+                  <button
+                    onClick={() => deleteSingleMessage(msg.id)}
+                    className="absolute top-2 right-1 text-xs bg-red-500 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
             </div>
 
             <div className="p-3 border-t border-gray-700 flex gap-2 bg-gray-800">
               <input
                 type="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 placeholder="Type a message..."
                 className="flex-1 p-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
-              <button className="px-4 py-2 bg-blue-500 rounded-lg font-medium hover:bg-blue-600 transition text-white">
+              <button
+                onClick={sendMessage}
+                className="px-4 py-2 bg-blue-500 rounded-lg font-medium hover:bg-blue-600 transition text-white"
+              >
                 Send
               </button>
             </div>

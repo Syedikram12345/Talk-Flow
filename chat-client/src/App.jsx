@@ -4,18 +4,22 @@ import Modes from "./components/Modes";
 import { Outlet } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 import SignUp from "./components/SignUp";
+import axios from "axios";
 
 function App() {
-  const [chatList, setChatList] = useState(() => {
-    const saved = localStorage.getItem("chatList");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("chatList", JSON.stringify(chatList));
-  }, [chatList]);
+    async function loadChats() {
+      const res = await axios.get("http://localhost:3000/api/chats");
+      setChatList(res.data);
+    }
+    loadChats();
+  }, []);
 
-  function addChat(chat) {
+  // console.log("chatList : ", chatList);
+
+  async function addChat(chat) {
     if (chat.name === "" || chat.uniqueId === "") return;
 
     const exists = chatList.some((c) => c.uniqueId === chat.uniqueId);
@@ -23,6 +27,12 @@ function App() {
       toast.error("Chat with the same unique ID already exists!");
       return;
     }
+
+    const response = await axios.post(
+      "http://localhost:3000/api/add-chat",
+      chat,
+    );
+    console.log(response.data);
 
     setChatList((prev) => [...prev, chat]);
   }

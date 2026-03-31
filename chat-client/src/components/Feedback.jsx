@@ -7,6 +7,7 @@ function Feedback() {
   function handleSubmit(e) {
     e.preventDefault();
     setInput("");
+    if (input === "") return;
     toast.success("Feedback submitted");
   }
   function feedbackChange(event) {

@@ -13,6 +13,7 @@ function AddChat() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    if (chat.name === "" && chat.uniqueId === "") return;
     toast.success("Chat added");
     addChat(chat);
     setChat({ name: "", uniqueId: "" });
