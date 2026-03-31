@@ -1,0 +1,22 @@
+<<<<<<< HEAD
+node_modules
+=======
+# Client
+chat-client/node_modules/
+chat-client/.env
+chat-client/.env.*
+chat-client/dist/
+
+# Server
+chat-server/node_modules/
+chat-server/.env
+chat-server/.env.*
+chat-server/build/
+
+# Global ignores
+node_modules/
+.env
+.env.*
+.DS_Store
+*.log
+>>>>>>> 5489384547a14c4a645248013e032351d7b3cdef
