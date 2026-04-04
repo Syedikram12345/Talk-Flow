@@ -3,7 +3,6 @@ import Header from "./components/Header";
 import Modes from "./components/Modes";
 import { Outlet } from "react-router-dom";
 import { toast, Toaster } from "sonner";
-import SignUp from "./components/SignUp";
 import axios from "axios";
 
 function App() {
@@ -11,28 +10,19 @@ function App() {
 
   useEffect(() => {
     async function loadChats() {
-      const res = await axios.get("http://localhost:3000/api/chats");
+      const res = await axios.get("http://localhost:3000/auth/chats");
       setChatList(res.data);
     }
     loadChats();
   }, []);
 
-  // console.log("chatList : ", chatList);
-
   async function addChat(chat) {
     if (chat.name === "" || chat.unique_id === "") return;
-
-    const exists = chatList.some((c) => c.unique_id === chat.unique_id);
-    if (exists) {
-      toast.error("Chat with the same unique ID already exists!");
-      return;
-    }
 
     const response = await axios.post(
       "http://localhost:3000/api/add-chat",
       chat,
     );
-    // console.log(response.data);
 
     setChatList((prev) => [response.data, ...prev]);
   }

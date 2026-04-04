@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { toast } from "sonner";
 
 function AddChat() {
-  const { addChat } = useOutletContext();
+  const { addChat, chatList } = useOutletContext();
   const [chat, setChat] = useState({ name: "", lastMsg: "", uniqueId: "" });
 
   function handleChange(event) {
@@ -14,6 +14,12 @@ function AddChat() {
   function handleSubmit(event) {
     event.preventDefault();
     if (chat.name === "" && chat.uniqueId === "") return;
+    const exists = chatList.some((c) => c.unique_id === chat.uniqueId);
+    if (exists) {
+      toast.error("Chat with the same unique ID already exists!");
+      return;
+    }
+
     toast.success("Chat added");
     addChat(chat);
     setChat({ name: "", uniqueId: "" });
