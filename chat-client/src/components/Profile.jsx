@@ -2,9 +2,10 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import getProfile from "@/utils/getProfile";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function Profile() {
-  const [email, setEmail] = React.useState("");
+  const [me, setMe] = React.useState("");
 
   const navigate = useNavigate();
 
@@ -19,31 +20,35 @@ function Profile() {
   }
 
   React.useEffect(() => {
-    setEmail(getProfile());
+    const myProfile = async () => {
+      const res = await getProfile();
+      setMe(res);
+    };
+    myProfile();
   }, []);
 
   return (
     <div className="h-full w-full flex flex-col justify-items-start sm:justify-between px-6 py-4">
       <div className="flex items-center gap-6 ">
-        <div className="h-32 w-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
-          <img
-            src=""
-            alt="profile"
-            className="w-full h-full object-cover object-center"
-          />
+        <div className=" rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
+          <Avatar className="w-32 h-32">
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
         </div>
 
         <div className="text-lg space-y-1">
           <h3>
-            <span className="font-semibold text-gray-700">Email : {email}</span>
+            Email :
+            <span className="font-semibold text-gray-400 "> {me.email}</span>
           </h3>
           <h3>
-            <span className="font-semibold text-gray-700">Unique ID : </span>
-            sdjkfg489railsf
+            Unique ID :
+            <span className="font-semibold text-gray-400"> {me.uuid}</span>
           </h3>
           <h3>
-            <span className="font-semibold text-gray-700">Chats saved : </span>
-            52
+            Chats saved :{" "}
+            <span className="font-semibold text-gray-400">52</span>
           </h3>
         </div>
       </div>

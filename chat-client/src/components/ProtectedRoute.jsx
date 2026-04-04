@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
-import getProfile from "../utils/getProfile";
+// import getProfile from "../utils/getProfile";
 
 function ProtectedRoute({ children }) {
   const [status, setStatus] = useState("loading");
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function checkAuth() {
       try {
-        setUser(getProfile());
-        // const res = await axios.get("http://localhost:3000/auth/me", {
-        //   withCredentials: true,
-        // });
-        // console.log("response:", res);
+        // setUser(getProfile());
+        const res = await axios.get("http://localhost:3000/auth/me", {
+          withCredentials: true,
+        });
+        console.log("response:", res);
 
         // setUser(res.data.email);
 

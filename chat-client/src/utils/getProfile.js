@@ -5,7 +5,8 @@ const getProfile = async () => {
     const res = await axios.get("http://localhost:3000/auth/me", {
       withCredentials: true,
     });
-    return res.data.email;
+
+    return { email: res.data.email, uuid: res.data.uuid };
   } catch (err) {
     console.log(err);
   }

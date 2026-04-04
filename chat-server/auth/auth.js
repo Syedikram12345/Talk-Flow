@@ -21,6 +21,8 @@ router.post("/signUp", async (req, res) => {
     const users = await db.query("SELECT * FROM users");
     const { email, password } = req.body;
 
+    const myUUID = crypto.randomUUID();
+
     if (!email || !password) {
       return res
         .status(400)
@@ -34,16 +36,20 @@ router.post("/signUp", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await db.query("INSERT INTO users (email, password) VALUES ($1, $2)", [
-      email,
-      hashedPassword,
-    ]);
+    await db.query(
+      "INSERT INTO users (email, password, unique_id) VALUES ($1, $2, $3)",
+      [email, hashedPassword, myUUID],
+    );
 
-    const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
+    const token = jwt.sign({ email: email, uuid: myUUID }, secret, {
+      expiresIn: "1h",
+    });
 
     res.cookie("token", token, COOKIE_OPTIONS);
 
-    return res.status(201).json({ message: "Signup successful", email });
+    return res
+      .status(201)
+      .json({ message: "Signup successful", email, myUUID });
   } catch (err) {
     console.log("SIGNUP ERROR:", err);
     return res.status(500).json({ message: "Server error", error: err });
@@ -72,13 +78,21 @@ router.post("/signIn", async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign({ email: user.email }, secret, { expiresIn: "1h" });
+    const token = jwt.sign(
+      { email: user.email, uuid: user.unique_id },
+      secret,
+      {
+        expiresIn: "1h",
+      },
+    );
 
     res.cookie("token", token, COOKIE_OPTIONS);
 
-    return res
-      .status(200)
-      .json({ message: "Signin successful", email: user.email });
+    return res.status(200).json({
+      message: "Signin successful",
+      email: user.email,
+      uuid: user.unique_id,
+    });
   } catch (err) {
     console.log("SIGNIN ERROR:", err);
     return res.status(500).json({ message: "Server error", error: err });
@@ -93,7 +107,7 @@ router.get("/me", (req, res) => {
     const decoded = jwt.verify(token, secret);
     console.log("decoded:", decoded);
 
-    return res.status(200).json({ email: decoded.email });
+    return res.status(200).json({ email: decoded.email, uuid: decoded.uuid });
   } catch {
     return res.status(401).json({ message: "Invalid token" });
   }
