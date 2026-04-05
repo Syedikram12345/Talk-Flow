@@ -69,12 +69,24 @@ function Profile() {
               <span className="font-semibold text-gray-400"> {me.uuid}</span>
             </h3>
             <div
-              onClick={() => {
-                handleCopy(me.uuid);
-              }}
-              className="bg-blue-500 hover:bg-blue-400 hover:scale-105 rounded-md h-7 w-7 text-black font-black flex  justify-center cursor-pointer"
+              onClick={() => handleCopy(me.uuid)}
+              className="bg-blue-500 hover:bg-blue-400 rounded-md h-7 w-7 
+             flex justify-center items-center cursor-pointer
+             transition-all duration-300 "
             >
-              {!isCopied ? "🗍" : "✓"}
+              <span
+                className={`absolute transition-all duration-300 
+                ${isCopied ? "opacity-0 scale-75" : "opacity-100 scale-100"}`}
+              >
+                🗍
+              </span>
+
+              <span
+                className={`absolute transition-all duration-300 
+                ${isCopied ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}
+              >
+                ✓
+              </span>
             </div>
           </div>
         </div>
