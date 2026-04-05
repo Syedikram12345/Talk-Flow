@@ -19,7 +19,8 @@ const COOKIE_OPTIONS = {
 router.post("/signUp", async (req, res) => {
   try {
     const users = await db.query("SELECT * FROM users");
-    const { email, password } = req.body;
+
+    const { email, password, name } = req.body;
 
     const myUUID = crypto.randomUUID();
 
@@ -27,6 +28,12 @@ router.post("/signUp", async (req, res) => {
       return res
         .status(400)
         .json({ message: "Email and password are required" });
+    }
+
+    if (!name) {
+      return res
+        .status(400)
+        .json({ message: "First name and Last name is required" });
     }
 
     const existingUser = users.rows.find((u) => u.email === email);
@@ -37,11 +44,11 @@ router.post("/signUp", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await db.query(
-      "INSERT INTO users (email, password, unique_id) VALUES ($1, $2, $3)",
-      [email, hashedPassword, myUUID],
+      "INSERT INTO users (email, password, unique_id, name) VALUES ($1, $2, $3,$4)",
+      [email, hashedPassword, myUUID, name],
     );
 
-    const token = jwt.sign({ email: email, uuid: myUUID }, secret, {
+    const token = jwt.sign({ email: email, uuid: myUUID, name: name }, secret, {
       expiresIn: "1h",
     });
 
@@ -79,7 +86,7 @@ router.post("/signIn", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { email: user.email, uuid: user.unique_id },
+      { email: user.email, uuid: user.unique_id, name: user.name },
       secret,
       {
         expiresIn: "1h",
@@ -101,13 +108,15 @@ router.post("/signIn", async (req, res) => {
 
 router.get("/me", (req, res) => {
   const token = req.cookies?.token;
+
   if (!token) return res.status(401).json({ message: "Not authenticated" });
 
   try {
     const decoded = jwt.verify(token, secret);
-    console.log("decoded:", decoded);
 
-    return res.status(200).json({ email: decoded.email, uuid: decoded.uuid });
+    return res
+      .status(200)
+      .json({ email: decoded.email, uuid: decoded.uuid, name: decoded.name });
   } catch {
     return res.status(401).json({ message: "Invalid token" });
   }

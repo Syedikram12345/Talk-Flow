@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function Profile() {
   const [me, setMe] = React.useState("");
+  const [isCopied, setIsCopied] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -27,29 +28,55 @@ function Profile() {
     myProfile();
   }, []);
 
+  async function handleCopy(text) {
+    setIsCopied(true);
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 5000);
+  }
+
   return (
     <div className="h-full w-full flex flex-col justify-items-start sm:justify-between px-6 py-4">
-      <div className="flex items-center gap-6 ">
+      <div className="flex items-center gap-6 flex-col sm:flex-row ">
         <div className=" rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
           <Avatar className="w-32 h-32">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage
+              src={`https://api.dicebear.com/7.x/bottts/svg?seed=${me.uuid || me.email || me.name}`}
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
 
         <div className="text-lg space-y-1">
           <h3>
+            Name :
+            <span className="font-semibold text-gray-400"> {me.name}</span>
+          </h3>
+          <h3>
             Email :
             <span className="font-semibold text-gray-400 "> {me.email}</span>
           </h3>
-          <h3>
-            Unique ID :
-            <span className="font-semibold text-gray-400"> {me.uuid}</span>
-          </h3>
-          <h3>
-            Chats saved :{" "}
-            <span className="font-semibold text-gray-400">52</span>
-          </h3>
+          <div className="flex gap-2 sm:gap-7">
+            <h3>
+              Unique ID :
+              <span className="font-semibold text-gray-400"> {me.uuid}</span>
+            </h3>
+            <div
+              onClick={() => {
+                handleCopy(me.uuid);
+              }}
+              className="bg-blue-500 hover:bg-blue-400 hover:scale-105 rounded-md h-7 w-7 text-black font-black flex  justify-center cursor-pointer"
+            >
+              {!isCopied ? "🗍" : "✓"}
+            </div>
+          </div>
         </div>
       </div>
 

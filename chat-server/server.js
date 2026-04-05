@@ -24,7 +24,6 @@ app.post("/api/add-chat", async (req, res) => {
       "INSERT INTO chats(name, unique_id) values($1 ,$2) RETURNING * ",
       [name, uniqueId],
     );
-    console.log(result.rows);
 
     res.json(result.rows[0]);
   } catch (err) {

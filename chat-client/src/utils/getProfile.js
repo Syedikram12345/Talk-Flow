@@ -6,7 +6,7 @@ const getProfile = async () => {
       withCredentials: true,
     });
 
-    return { email: res.data.email, uuid: res.data.uuid };
+    return { email: res.data.email, uuid: res.data.uuid, name: res.data.name };
   } catch (err) {
     console.log(err);
   }
