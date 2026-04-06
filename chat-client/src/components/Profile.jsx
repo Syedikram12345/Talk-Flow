@@ -54,19 +54,28 @@ function Profile() {
           </Avatar>
         </div>
 
-        <div className="text-lg space-y-1">
+        <div className="text-lg space-y-1 cursor-pointer">
           <h3>
             Name :
-            <span className="font-semibold text-gray-400"> {me.name}</span>
+            <span className="font-semibold text-gray-400 cursor-pointer">
+              {" "}
+              {me.name}
+            </span>
           </h3>
           <h3>
             Email :
-            <span className="font-semibold text-gray-400 "> {me.email}</span>
+            <span className="font-semibold text-gray-400 cursor-pointer">
+              {" "}
+              {me.email}
+            </span>
           </h3>
-          <div className="flex gap-2 sm:gap-7">
+          <div className="flex gap-2 sm:gap-7 cursor-pointer">
             <h3>
               Unique ID :
-              <span className="font-semibold text-gray-400"> {me.uuid}</span>
+              <span className="font-semibold text-gray-400 cursor-pointer">
+                {" "}
+                {me.uuid}
+              </span>
             </h3>
             <div
               onClick={() => handleCopy(me.uuid)}

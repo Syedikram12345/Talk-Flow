@@ -77,7 +77,6 @@ function Chats() {
               }`}
             >
               <p className="font-bold">{chat.name}</p>
-              <p className="text-sm text-gray-400">{chat.lastMsg}</p>
             </div>
           ))}
         </div>

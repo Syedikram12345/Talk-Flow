@@ -10,21 +10,32 @@ function App() {
 
   useEffect(() => {
     async function loadChats() {
-      const res = await axios.get("http://localhost:3000/auth/chats");
+      const res = await axios.get("http://localhost:3000/api/chats");
       setChatList(res.data);
     }
     loadChats();
   }, []);
 
   async function addChat(chat) {
-    if (chat.name === "" || chat.unique_id === "") return;
+    if (chat.name === "" || chat.uniqueId === "") return;
 
-    const response = await axios.post(
-      "http://localhost:3000/api/add-chat",
-      chat,
-    );
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/add-chat",
+        chat,
+      );
 
-    setChatList((prev) => [response.data, ...prev]);
+      if (response.data.error) {
+        toast.error(response.data.error);
+        return;
+      }
+
+      setChatList((prev) => [response.data, ...prev]);
+      toast.success("Chat added");
+    } catch (error) {
+      const msg = error.response?.data?.error || "Something went wrong";
+      toast.error(msg);
+    }
   }
 
   async function deleteChat(unique_id) {

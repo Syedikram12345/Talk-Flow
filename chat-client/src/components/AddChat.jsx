@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 function AddChat() {
   const { addChat, chatList } = useOutletContext();
-  const [chat, setChat] = useState({ name: "", lastMsg: "", uniqueId: "" });
+  const [chat, setChat] = useState({ name: "", uniqueId: "" });
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -13,14 +13,15 @@ function AddChat() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (chat.name === "" && chat.uniqueId === "") return;
+    if (chat.name === "" && chat.uniqueId === "")
+      return toast.error("Empty fields");
+
     const exists = chatList.some((c) => c.unique_id === chat.uniqueId);
     if (exists) {
       toast.error("Chat with the same unique ID already exists!");
       return;
     }
 
-    toast.success("Chat added");
     addChat(chat);
     setChat({ name: "", uniqueId: "" });
   }
@@ -42,7 +43,7 @@ function AddChat() {
               name="name"
               type="text"
               className="w-full px-3 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none"
-              placeholder="Enter chat name..."
+              placeholder="Set a chat name..."
               value={chat.name}
             />
           </div>

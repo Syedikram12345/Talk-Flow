@@ -6,7 +6,6 @@ import axios from "axios";
 function SignUp() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  // const [name, setName] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const navigate = useNavigate();
