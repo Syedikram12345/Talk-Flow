@@ -15,7 +15,6 @@ function App() {
         withCredentials: true,
       });
       setChatList(res.data.result);
-      // console.log(res.data.result);
     }
     loadChats();
   }, []);
@@ -27,7 +26,9 @@ function App() {
           "http://localhost:3000/api/getNotifications",
           { withCredentials: true },
         );
-        setNotifications(res.data);
+        if (res?.data) {
+          setNotifications(res.data);
+        }
       } catch (err) {
         console.log("Notification refresh error:", err);
       }
@@ -40,7 +41,7 @@ function App() {
     if (chat.name === "" || chat.uniqueId === "") return;
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3000/api/requests",
         { name: chat.name, friends_id: chat.uniqueId },
         {
@@ -48,14 +49,6 @@ function App() {
         },
       );
 
-      if (response.data.error) {
-        toast.error(response.data.error);
-        return;
-      }
-
-      console.log("response", response);
-
-      // setChatList((prev) => [response.data, ...prev]);
       toast.success("Friend request sent");
       setChat({ name: "", uniqueId: "" });
     } catch (error) {
@@ -68,7 +61,7 @@ function App() {
     try {
       await axios.delete(`http://localhost:3000/api/delete-chat/${unique_id}`);
       setChatList((prev) =>
-        prev.filter((chat) => chat.unique_id !== unique_id),
+        prev.filter((chat) => chat.friend_unique_id !== unique_id),
       );
       toast.success("Chat deleted successfully!");
     } catch (err) {

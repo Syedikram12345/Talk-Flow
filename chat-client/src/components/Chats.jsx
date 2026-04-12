@@ -123,7 +123,7 @@ function Chats() {
                     <AlertDialogAction
                       variant="outline"
                       onClick={() => {
-                        deleteChat(chatList[selected].unique_id);
+                        deleteChat(chatList[selected].friend_unique_id);
                         setSelected(null);
                         setCurrentChat(null);
                       }}
