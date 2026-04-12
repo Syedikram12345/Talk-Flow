@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import React from "react";
 import NotificationCard from "./NotificationCard";
 import axios from "axios";
+import { useOutletContext } from "react-router-dom";
 
 function Notifications() {
-  const [notifications, setNotifications] = useState([]);
+  const { notifications, setNotifications } = useOutletContext();
 
   async function handleAccept(id) {
     try {

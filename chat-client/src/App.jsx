@@ -7,6 +7,7 @@ import axios from "axios";
 
 function App() {
   const [chatList, setChatList] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     async function loadChats() {
@@ -17,6 +18,22 @@ function App() {
       // console.log(res.data.result);
     }
     loadChats();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/api/getNotifications",
+          { withCredentials: true },
+        );
+        setNotifications(res.data);
+      } catch (err) {
+        console.log("Notification refresh error:", err);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   async function addChat({ chat, setChat }) {
@@ -61,7 +78,7 @@ function App() {
 
   return (
     <div className="h-screen w-screen flex flex-col bg-gray-900 text-gray-100">
-      <Header />
+      <Header notifications={notifications} />
 
       <div className="flex flex-1 min-h-0">
         <div className="relative shrink-0 h-full overflow-y-auto">
@@ -71,7 +88,15 @@ function App() {
         </div>
 
         <div className="flex-1 h-full overflow-y-auto">
-          <Outlet context={{ chatList, addChat, deleteChat }} />
+          <Outlet
+            context={{
+              chatList,
+              addChat,
+              deleteChat,
+              notifications,
+              setNotifications,
+            }}
+          />
         </div>
       </div>
       <Toaster position="top-right" />
