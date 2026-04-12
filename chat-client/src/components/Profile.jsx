@@ -10,6 +10,8 @@ function Profile() {
 
   const navigate = useNavigate();
 
+  const image = `https://api.dicebear.com/7.x/bottts/svg?seed=${me.uuid || me.email || me.name}`;
+
   async function handleLogout() {
     await axios.post(
       "http://localhost:3000/auth/logout",
@@ -47,9 +49,7 @@ function Profile() {
       <div className="flex items-center gap-6 flex-col sm:flex-row ">
         <div className=" rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
           <Avatar className="w-32 h-32">
-            <AvatarImage
-              src={`https://api.dicebear.com/7.x/bottts/svg?seed=${me.uuid || me.email || me.name}`}
-            />
+            <AvatarImage src={image} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>

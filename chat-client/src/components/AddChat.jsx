@@ -22,8 +22,7 @@ function AddChat() {
       return;
     }
 
-    addChat(chat);
-    setChat({ name: "", uniqueId: "" });
+    addChat({ chat, setChat });
   }
 
   return (

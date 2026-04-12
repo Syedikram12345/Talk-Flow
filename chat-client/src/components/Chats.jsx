@@ -97,7 +97,7 @@ function Chats() {
               <div>
                 <h2 className="font-semibold text-lg">{currentChat}</h2>
                 <p className="text-xs text-gray-400">
-                  ID : {chatList[selected].unique_id}
+                  ID : {chatList[selected].friend_unique_id}
                 </p>
               </div>
               <AlertDialog>

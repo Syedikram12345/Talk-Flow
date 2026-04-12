@@ -10,6 +10,7 @@ import Profile from "./components/Profile.jsx";
 import SignUp from "./components/auth/SignUp.jsx";
 import SignIn from "./components/auth/SignIn.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import Notifications from "./components/Notifications.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: "add-chat", element: <AddChat /> },
       { path: "feedback", element: <Feedback /> },
       { path: "profile", element: <Profile /> },
+      { path: "notifications", element: <Notifications /> },
     ],
   },
   {

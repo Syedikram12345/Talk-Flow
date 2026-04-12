@@ -10,19 +10,25 @@ function App() {
 
   useEffect(() => {
     async function loadChats() {
-      const res = await axios.get("http://localhost:3000/api/chats");
-      setChatList(res.data);
+      const res = await axios.get("http://localhost:3000/api/chats", {
+        withCredentials: true,
+      });
+      setChatList(res.data.result);
+      // console.log(res.data.result);
     }
     loadChats();
   }, []);
 
-  async function addChat(chat) {
+  async function addChat({ chat, setChat }) {
     if (chat.name === "" || chat.uniqueId === "") return;
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/add-chat",
-        chat,
+        "http://localhost:3000/api/requests",
+        { friends_id: chat.uniqueId },
+        {
+          withCredentials: true,
+        },
       );
 
       if (response.data.error) {
@@ -30,8 +36,11 @@ function App() {
         return;
       }
 
-      setChatList((prev) => [response.data, ...prev]);
-      toast.success("Chat added");
+      console.log("response", response);
+
+      // setChatList((prev) => [response.data, ...prev]);
+      toast.success("Friend request sent");
+      setChat({ name: "", uniqueId: "" });
     } catch (error) {
       const msg = error.response?.data?.error || "Something went wrong";
       toast.error(msg);
