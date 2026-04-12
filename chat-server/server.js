@@ -53,15 +53,11 @@ app.get("/api/chats", async (req, res) => {
   const decoded = jwt.verify(token, secret);
 
   try {
-    const name = await db.query("SELECT name FROM users WHERE unique_id = $1", [
-      decoded.uuid,
-    ]);
-
     const result = await db.query(
       "SELECT * FROM contacts WHERE user_unique_id = $1  order by id DESC",
       [decoded.uuid],
     );
-    res.json({ result: result.rows, name: name.rows });
+    res.json({ result: result.rows });
   } catch (err) {
     console.log("DB ERROR IN GET:", err);
     res.status(500).json({ error: "database error" });
@@ -88,8 +84,6 @@ app.post("/api/requests", async (req, res) => {
   try {
     const token = req.cookies?.token;
     const { name, friends_id } = req.body;
-
-    console.log("name:", name);
 
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
@@ -180,19 +174,37 @@ app.patch("/api/requests/:id/accept", async (req, res) => {
     const decoded = jwt.verify(token, secret);
     const id = req.params.id;
 
-    const row = await db.query(
-      "UPDATE requests SET status = 'accepted' WHERE id = $1 RETURNING *",
-      [id],
+    const request = await db.query("SELECT * FROM requests WHERE id = $1", [
+      id,
+    ]);
+
+    if (request.rows.length === 0)
+      return res.status(404).json({ error: "Request not found" });
+
+    const { user_id, friends_id, friends_name } = request.rows[0];
+
+    const sender = await db.query(
+      "SELECT name FROM users WHERE unique_id = $1",
+      [user_id],
+    );
+
+    const senderRealName = sender.rows[0].name;
+
+    await db.query("UPDATE requests SET status = 'accepted' WHERE id = $1", [
+      id,
+    ]);
+
+    await db.query(
+      "INSERT INTO contacts(user_unique_id, friend_unique_id, name) VALUES($1,$2,$3)",
+      [decoded.uuid, user_id, senderRealName],
     );
 
     await db.query(
-      "INSERT INTO contacts(user_unique_id, friend_unique_id,name) values($1 ,$2,$3)",
-      [decoded.uuid, row.friends_id, row.name],
+      "INSERT INTO contacts(user_unique_id, friend_unique_id, name) VALUES($1,$2,$3)",
+      [user_id, decoded.uuid, friends_name],
     );
 
-    res.json({
-      message: "Request accepted",
-    });
+    res.json({ message: "Request accepted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
