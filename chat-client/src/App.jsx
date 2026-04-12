@@ -25,7 +25,7 @@ function App() {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/requests",
-        { friends_id: chat.uniqueId },
+        { name: chat.name, friends_id: chat.uniqueId },
         {
           withCredentials: true,
         },

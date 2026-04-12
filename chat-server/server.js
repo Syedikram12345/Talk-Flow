@@ -26,8 +26,6 @@ app.post("/api/add-chat", async (req, res) => {
 
   const decoded = jwt.verify(token, secret);
 
-  console.log("decoded:", decoded);
-
   try {
     const isUser = await db.query("SELECT * FROM users WHERE unique_id = $1", [
       uniqueId,
@@ -53,7 +51,6 @@ app.get("/api/chats", async (req, res) => {
   const token = req.cookies?.token;
   const secret = process.env.JWT_SECRET;
   const decoded = jwt.verify(token, secret);
-  console.log("decoded", decoded);
 
   try {
     const name = await db.query("SELECT name FROM users WHERE unique_id = $1", [
@@ -90,7 +87,9 @@ app.delete("/api/delete-chat/:uniqueId", async (req, res) => {
 app.post("/api/requests", async (req, res) => {
   try {
     const token = req.cookies?.token;
-    const friends_id = req.body.friends_id;
+    const { name, friends_id } = req.body;
+
+    console.log("name:", name);
 
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
@@ -131,8 +130,8 @@ app.post("/api/requests", async (req, res) => {
     }
 
     const response = await db.query(
-      "INSERT INTO requests (user_id,friends_id,status) VALUES($1,$2,$3) RETURNING *",
-      [decoded.uuid, friends_id, "pending"],
+      "INSERT INTO requests (user_id,friends_id,status,friends_name) VALUES($1,$2,$3,$4) RETURNING *",
+      [decoded.uuid, friends_id, "pending", name],
     );
 
     return res.json(response.rows[0]);
@@ -176,11 +175,19 @@ app.get("/api/getNotifications", async (req, res) => {
 
 app.patch("/api/requests/:id/accept", async (req, res) => {
   try {
+    const token = req.cookies?.token;
+    const secret = process.env.JWT_SECRET;
+    const decoded = jwt.verify(token, secret);
     const id = req.params.id;
 
-    await db.query(
+    const row = await db.query(
       "UPDATE requests SET status = 'accepted' WHERE id = $1 RETURNING *",
       [id],
+    );
+
+    await db.query(
+      "INSERT INTO contacts(user_unique_id, friend_unique_id,name) values($1 ,$2,$3)",
+      [decoded.uuid, row.friends_id, row.name],
     );
 
     res.json({

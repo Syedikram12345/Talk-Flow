@@ -13,7 +13,7 @@ const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: false,
   sameSite: "strict",
-  maxAge: 60 * 60 * 1000,
+  maxAge: 180 * 60 * 1000,
 };
 
 router.post("/signUp", async (req, res) => {
