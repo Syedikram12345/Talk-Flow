@@ -13,7 +13,7 @@ const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: false,
   sameSite: "strict",
-  maxAge: 180 * 60 * 1000,
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
 router.post("/signUp", async (req, res) => {
@@ -49,7 +49,7 @@ router.post("/signUp", async (req, res) => {
     );
 
     const token = jwt.sign({ email: email, uuid: myUUID, name: name }, secret, {
-      expiresIn: "1h",
+      expiresIn: "7h",
     });
 
     res.cookie("token", token, COOKIE_OPTIONS);
@@ -89,7 +89,7 @@ router.post("/signIn", async (req, res) => {
       { email: user.email, uuid: user.unique_id, name: user.name },
       secret,
       {
-        expiresIn: "1h",
+        expiresIn: "7h",
       },
     );
 
