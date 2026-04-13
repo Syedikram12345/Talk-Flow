@@ -21,6 +21,8 @@ function Chats() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
 
+  console.log("chatlist from chats:", chatList);
+
   function sendMessage() {
     if (!text.trim()) return;
 
@@ -60,7 +62,7 @@ function Chats() {
           Chats
         </div>
         <div>
-          {chatList.map((chat, index) => (
+          {chatList?.result?.map((chat, index) => (
             <div
               key={index}
               onClick={() => {
@@ -76,7 +78,9 @@ function Chats() {
                   : ""
               }`}
             >
-              <p className="font-bold">{chat.name}</p>
+              <p className="font-bold">
+                {chatList.showFriendsName ? chat.user_name : chat.friend_name}
+              </p>
             </div>
           ))}
         </div>
@@ -111,7 +115,8 @@ function Chats() {
                   <AlertDialogHeader>
                     <AlertDialogTitle>Delete chat?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This will permanently delete this chat conversation.
+                      This will permanently delete this chat conversation and
+                      you will no longer be friends.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
 

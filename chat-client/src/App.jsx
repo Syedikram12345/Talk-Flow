@@ -11,11 +11,15 @@ function App() {
 
   useEffect(() => {
     async function loadChats() {
+      console.log("inside");
+
       const res = await axios.get("http://localhost:3000/api/chats", {
         withCredentials: true,
       });
-      setChatList(res.data.result);
+      console.log("res", res);
+      setChatList(res.data);
     }
+
     loadChats();
   }, []);
 
@@ -59,7 +63,9 @@ function App() {
 
   async function deleteChat(unique_id) {
     try {
-      await axios.delete(`http://localhost:3000/api/delete-chat/${unique_id}`);
+      await axios.delete(`http://localhost:3000/api/delete-chat/${unique_id}`, {
+        withCredentials: true,
+      });
       setChatList((prev) =>
         prev.filter((chat) => chat.friend_unique_id !== unique_id),
       );

@@ -57,6 +57,16 @@ app.get("/api/chats", async (req, res) => {
       "SELECT * FROM contacts WHERE user_unique_id = $1  order by id DESC",
       [decoded.uuid],
     );
+
+    if (result.rows.length === 0) {
+      const result = await db.query(
+        "SELECT * FROM contacts WHERE friend_unique_id = $1 order by id DESC",
+        [decoded.uuid],
+      );
+
+      res.json({ showFriendsName: true, result: result.rows });
+    }
+
     res.json({ result: result.rows });
   } catch (err) {
     console.log("DB ERROR IN GET:", err);
@@ -65,13 +75,31 @@ app.get("/api/chats", async (req, res) => {
 });
 
 app.delete("/api/delete-chat/:uniqueId", async (req, res) => {
-  const uniqueId = req.params.uniqueId;
-
   try {
-    await db.query("DELETE FROM contacts WHERE friend_unique_id = $1", [
-      uniqueId,
-    ]);
-    res.json({ message: "Chat deleted successfully" });
+    const token = req.cookies?.token;
+    const secret = process.env.JWT_SECRET;
+
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, secret);
+    const uniqueId = req.params.uniqueId;
+    await db.query(
+      `DELETE FROM contacts 
+       WHERE (user_unique_id = $1 AND friend_unique_id = $2)
+       OR (user_unique_id = $2 AND friend_unique_id = $1)`,
+      [decoded.uuid, uniqueId],
+    );
+
+    await db.query(
+      `DELETE FROM requests 
+       WHERE (user_id = $1 AND friends_id = $2)
+       OR (user_id = $2 AND friends_id = $1)`,
+      [decoded.uuid, uniqueId],
+    );
+
+    res.json({ message: "Chat and friendship removed" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "database error" });
@@ -195,13 +223,8 @@ app.patch("/api/requests/:id/accept", async (req, res) => {
     ]);
 
     await db.query(
-      "INSERT INTO contacts(user_unique_id, friend_unique_id, name) VALUES($1,$2,$3)",
-      [decoded.uuid, user_id, senderRealName],
-    );
-
-    await db.query(
-      "INSERT INTO contacts(user_unique_id, friend_unique_id, name) VALUES($1,$2,$3)",
-      [user_id, decoded.uuid, friends_name],
+      "INSERT INTO contacts(user_unique_id, friend_unique_id, user_name, friend_name) VALUES($1,$2,$3,$4)",
+      [decoded.uuid, user_id, friends_name, senderRealName],
     );
 
     res.json({ message: "Request accepted" });

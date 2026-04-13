@@ -16,7 +16,7 @@ function Header({ notifications = [] }) {
 
             {/* BADGE */}
             {notifications.length > 0 && (
-              <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs px-2 py-[2px] rounded-full shadow animate-ping">
+              <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs px-2 py-[2px] rounded-full shadow ">
                 {notifications.length}
               </div>
             )}
