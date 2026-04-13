@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { DropdownMenuDestructive } from "./DropdownMenuDestructive";
 
 function Chats() {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -104,40 +93,13 @@ function Chats() {
                   ID : {selectedChat?.friend_unique_id}
                 </p>
               </div>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="rounded-3xl">
-                    Delete Chat
-                  </Button>
-                </AlertDialogTrigger>
-
-                <AlertDialogContent size="sm">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete chat?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will permanently delete this chat conversation and
-                      you will no longer be friends.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-
-                  <AlertDialogFooter>
-                    <AlertDialogCancel variant="outline">
-                      Cancel
-                    </AlertDialogCancel>
-
-                    <AlertDialogAction
-                      variant="outline"
-                      onClick={() => {
-                        deleteChat(selectedChat?.friend_unique_id);
-                        setSelectedChat(null);
-                        setCurrentChat(null);
-                      }}
-                    >
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <DropdownMenuDestructive
+                onDelete={() => {
+                  deleteChat(selectedChat?.friend_unique_id);
+                  setSelectedChat(null);
+                  setCurrentChat(null);
+                }}
+              />
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">

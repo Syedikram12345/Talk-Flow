@@ -16,7 +16,7 @@ function AddChat() {
     if (chat.name === "" && chat.uniqueId === "")
       return toast.error("Empty fields");
 
-    const exists = chatList.some((c) => c.unique_id === chat.uniqueId);
+    const exists = chatList.result?.some((c) => c.unique_id === chat.uniqueId);
     if (exists) {
       toast.error("Chat with the same unique ID already exists!");
       return;

@@ -66,9 +66,12 @@ function App() {
       await axios.delete(`http://localhost:3000/api/delete-chat/${unique_id}`, {
         withCredentials: true,
       });
-      setChatList((prev) =>
-        prev.filter((chat) => chat.friend_unique_id !== unique_id),
-      );
+      setChatList((prev) => ({
+        ...prev,
+        result: prev.result.filter(
+          (chat) => chat.friend_unique_id !== unique_id,
+        ),
+      }));
       toast.success("Chat deleted successfully!");
     } catch (err) {
       console.log(err);
