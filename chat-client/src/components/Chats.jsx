@@ -14,14 +14,12 @@ import {
 import { Button } from "@/components/ui/button";
 
 function Chats() {
-  const [selected, setSelected] = useState(null);
+  const [selectedChat, setSelectedChat] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const { chatList, deleteChat } = useOutletContext();
   const [isMobileView, setIsMobileView] = useState(false);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
-
-  console.log("chatlist from chats:", chatList);
 
   function sendMessage() {
     if (!text.trim()) return;
@@ -38,7 +36,7 @@ function Chats() {
       const reply = {
         id: crypto.randomUUID(),
         text: "Bro I received your message!",
-        sender: { currentChat },
+        sender: "other",
       };
 
       setMessages((prev) => [...prev, reply]);
@@ -66,14 +64,16 @@ function Chats() {
             <div
               key={index}
               onClick={() => {
-                setSelected(index);
-                setCurrentChat(chat.name);
+                setSelectedChat(chat);
+                setCurrentChat(
+                  chatList.showFriendsName ? chat.user_name : chat.friend_name,
+                );
                 if (window.innerWidth < 768) {
                   setIsMobileView(true);
                 }
               }}
               className={`p-4 border-b border-gray-700 hover:bg-gray-600 cursor-pointer ${
-                selected === index
+                selectedChat?.friend_unique_id === chat.friend_unique_id
                   ? "bg-gray-700 border-l-4 border-blue-500"
                   : ""
               }`}
@@ -87,7 +87,7 @@ function Chats() {
       </div>
 
       <div className="flex-1 flex flex-col h-[90%] sm:h-full border-t-4 border-blue-500 bg-gray-900">
-        {selected !== null ? (
+        {selectedChat !== null ? (
           <>
             <div className="p-4 border-b border-gray-700 sticky top-0 z-10 flex justify-between bg-gray-800">
               {isMobileView && (
@@ -101,7 +101,7 @@ function Chats() {
               <div>
                 <h2 className="font-semibold text-lg">{currentChat}</h2>
                 <p className="text-xs text-gray-400">
-                  ID : {chatList[selected].friend_unique_id}
+                  ID : {selectedChat?.friend_unique_id}
                 </p>
               </div>
               <AlertDialog>
@@ -128,8 +128,8 @@ function Chats() {
                     <AlertDialogAction
                       variant="outline"
                       onClick={() => {
-                        deleteChat(chatList[selected].friend_unique_id);
-                        setSelected(null);
+                        deleteChat(selectedChat?.friend_unique_id);
+                        setSelectedChat(null);
                         setCurrentChat(null);
                       }}
                     >
