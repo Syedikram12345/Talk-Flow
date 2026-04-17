@@ -185,13 +185,13 @@ app.get("/api/getNotifications", async (req, res) => {
     const decoded = jwt.verify(token, secret);
 
     const response = await db.query(
-      `
-      SELECT 
+      `SELECT 
         r.id,
         r.user_id,
         r.friends_id,
         r.status,
-        u.name AS sender_name
+        u.name AS sender_name,
+        u.unique_id AS sender_uuid
       FROM requests r
       JOIN users u ON r.user_id = u.unique_id
       WHERE r.friends_id = $1 AND r.status = $2
@@ -256,7 +256,7 @@ app.patch("/api/requests/:id/reject", async (req, res) => {
   }
 });
 
-const server = app.listen(3000, () => {
+app.listen(3000, () => {
   console.log("listening");
 });
 

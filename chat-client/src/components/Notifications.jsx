@@ -72,13 +72,12 @@ function Notifications() {
         notifications.map((value) => (
           <NotificationCard
             key={value.id}
-            name={value.sender_name}
-            onAccept={() => {
-              handleAccept(value.id);
+            user={{
+              name: value.sender_name,
+              uuid: value.sender_uuid,
             }}
-            onReject={() => {
-              handleReject(value.id);
-            }}
+            onAccept={() => handleAccept(value.id)}
+            onReject={() => handleReject(value.id)}
           />
         ))
       )}
