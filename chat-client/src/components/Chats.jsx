@@ -94,8 +94,12 @@ function Chats() {
                 </p>
               </div>
               <DropdownMenuDestructive
-                onDelete={() => {
-                  deleteChat(selectedChat?.friend_unique_id);
+                deleteChat={() => {
+                  deleteChat(
+                    chatList.showFriendsName
+                      ? selectedChat?.user_unique_id
+                      : selectedChat?.friend_unique_id,
+                  );
                   setSelectedChat(null);
                   setCurrentChat(null);
                 }}

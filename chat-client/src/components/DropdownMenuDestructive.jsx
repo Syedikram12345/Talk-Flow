@@ -1,4 +1,4 @@
-import { PencilIcon, ShareIcon, TrashIcon } from "lucide-react";
+import { PencilIcon, TrashIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,7 +22,7 @@ import {
 
 import { MoreVertical } from "lucide-react";
 
-export function DropdownMenuDestructive({ onDelete }) {
+export function DropdownMenuDestructive({ deleteChat }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -39,10 +39,10 @@ export function DropdownMenuDestructive({ onDelete }) {
             <PencilIcon className="mr-2 h-4 w-4" />
             Edit
           </DropdownMenuItem>
-          <DropdownMenuItem className="hover:bg-gray-700 focus:bg-gray-700 focus:text-white cursor-pointer">
+          {/* <DropdownMenuItem className="hover:bg-gray-700 focus:bg-gray-700 focus:text-white cursor-pointer">
             <ShareIcon className="mr-2 h-4 w-4" />
             Share
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-gray-700" />
         <DropdownMenuGroup>
@@ -70,7 +70,7 @@ export function DropdownMenuDestructive({ onDelete }) {
                 </AlertDialogCancel>
                 <AlertDialogAction
                   className="bg-red-700 hover:bg-red-600 text-white"
-                  onClick={onDelete}
+                  onClick={deleteChat}
                 >
                   Delete
                 </AlertDialogAction>

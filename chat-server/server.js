@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./auth/auth.js";
 import jwt from "jsonwebtoken";
 import env from "dotenv";
+// import { WebSocketServer } from "ws";
 
 env.config();
 
@@ -64,13 +65,13 @@ app.get("/api/chats", async (req, res) => {
         [decoded.uuid],
       );
 
-      res.json({ showFriendsName: true, result: result.rows });
+      return res.json({ showFriendsName: true, result: result.rows });
     }
 
-    res.json({ result: result.rows });
+    return res.json({ result: result.rows });
   } catch (err) {
     console.log("DB ERROR IN GET:", err);
-    res.status(500).json({ error: "database error" });
+    return res.status(500).json({ error: "database error" });
   }
 });
 
@@ -83,29 +84,39 @@ app.delete("/api/delete-chat/:uniqueId", async (req, res) => {
       return res.status(401).json({ error: "No token provided" });
     }
 
-    const decoded = jwt.verify(token, secret);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, secret);
+    } catch (err) {
+      return res.status(401).json({ error: "Invalid or expired token" });
+    }
+
     const uniqueId = req.params.uniqueId;
+
+    console.log("decoded.uuid:", decoded.uuid);
+    console.log("unique id:", uniqueId);
+
     await db.query(
-      `DELETE FROM contacts 
+      `DELETE FROM contacts
        WHERE (user_unique_id = $1 AND friend_unique_id = $2)
        OR (user_unique_id = $2 AND friend_unique_id = $1)`,
       [decoded.uuid, uniqueId],
     );
 
     await db.query(
-      `DELETE FROM requests 
+      `DELETE FROM requests
        WHERE (user_id = $1 AND friends_id = $2)
        OR (user_id = $2 AND friends_id = $1)`,
       [decoded.uuid, uniqueId],
     );
 
-    res.json({ message: "Chat and friendship removed" });
+    return res.json({ message: "Chat and friendship removed" });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "database error" });
+
+    return res.status(500).json({ error: "Database error" });
   }
 });
-
 // requests end point
 
 app.post("/api/requests", async (req, res) => {
@@ -245,6 +256,15 @@ app.patch("/api/requests/:id/reject", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+const server = app.listen(3000, () => {
   console.log("listening");
 });
+
+// const wss = new WebSocketServer({ server });
+
+// wss.on("connection", (ws) => {
+//   ws.on("message", (data) => {
+//     console.log("Data from client:", data);
+//     ws.send("Thanks");
+//   });
+// });

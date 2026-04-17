@@ -11,12 +11,9 @@ function App() {
 
   useEffect(() => {
     async function loadChats() {
-      console.log("inside");
-
       const res = await axios.get("http://localhost:3000/api/chats", {
         withCredentials: true,
       });
-      console.log("res", res);
       setChatList(res.data);
     }
 
