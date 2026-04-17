@@ -90,7 +90,10 @@ function Chats() {
               <div>
                 <h2 className="font-semibold text-lg">{currentChat}</h2>
                 <p className="text-xs text-gray-400">
-                  ID : {selectedChat?.friend_unique_id}
+                  ID :{" "}
+                  {chatList.showFriendsName
+                    ? selectedChat?.user_unique_id
+                    : selectedChat?.friend_unique_id}
                 </p>
               </div>
               <DropdownMenuDestructive
