@@ -14,7 +14,6 @@ function Header({ notifications = [] }) {
               <FontAwesomeIcon icon={faBell} />
             </button>
 
-            {/* BADGE */}
             {notifications.length > 0 && (
               <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs px-2 py-[2px] rounded-full shadow ">
                 {notifications.length}
@@ -23,7 +22,6 @@ function Header({ notifications = [] }) {
           </div>
         </NavLink>
 
-        {/* PROFILE ICON */}
         <NavLink to="/profile">
           <button className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-100 transition">
             <FontAwesomeIcon icon={faUser} />

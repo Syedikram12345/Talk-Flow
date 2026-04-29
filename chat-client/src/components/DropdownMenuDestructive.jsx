@@ -22,7 +22,7 @@ import {
 
 import { MoreVertical } from "lucide-react";
 
-export function DropdownMenuDestructive({ deleteChat }) {
+export function DropdownMenuDestructive({ deleteChat,handleEdit }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,14 +35,14 @@ export function DropdownMenuDestructive({ deleteChat }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-gray-800 border border-gray-700 text-gray-100">
         <DropdownMenuGroup>
-          <DropdownMenuItem className="hover:bg-gray-700 focus:bg-gray-700 focus:text-white cursor-pointer">
-            <PencilIcon className="mr-2 h-4 w-4" />
+          <DropdownMenuItem
+          onClick={handleEdit}
+          className="hover:bg-gray-700 focus:bg-gray-700 focus:text-white cursor-pointer">
+              <PencilIcon className="mr-2 h-4 w-4" />
             Edit
+            
           </DropdownMenuItem>
-          {/* <DropdownMenuItem className="hover:bg-gray-700 focus:bg-gray-700 focus:text-white cursor-pointer">
-            <ShareIcon className="mr-2 h-4 w-4" />
-            Share
-          </DropdownMenuItem> */}
+
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-gray-700" />
         <DropdownMenuGroup>

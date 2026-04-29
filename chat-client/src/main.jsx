@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Chats from "./components/Chats.jsx";
 import AddChat from "./components/AddChat.jsx";
+import EditChatPage from "./components/EditChatPage.jsx"
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
     path: "/signin",
     element: <SignIn />,
   },
+  // {
+  //   path: "/edit-chat",
+  //   element: <EditChatPage />,
+  // },
 ]);
 
 createRoot(document.getElementById("root")).render(

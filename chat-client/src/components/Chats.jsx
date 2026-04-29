@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { DropdownMenuDestructive } from "./DropdownMenuDestructive";
+import EditChatPage from "./EditChatPage.jsx";
 
 function Chats() {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -9,6 +10,11 @@ function Chats() {
   const [isMobileView, setIsMobileView] = useState(false);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
+  const [openEdit, setOpenEdit] = useState(false);
+
+function handleEdit(){
+  setOpenEdit(true);
+};
 
   function sendMessage() {
     if (!text.trim()) return;
@@ -97,6 +103,7 @@ function Chats() {
                 </p>
               </div>
               <DropdownMenuDestructive
+              handleEdit={handleEdit}
                 deleteChat={() => {
                   deleteChat(
                     chatList.showFriendsName
@@ -153,6 +160,7 @@ function Chats() {
           </div>
         )}
       </div>
+      <EditChatPage open={openEdit} setOpen={setOpenEdit} />
     </div>
   );
 }

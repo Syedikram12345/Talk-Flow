@@ -48,7 +48,6 @@ function Notifications() {
         console.log("Error loading notifications:", err);
       }
     }
-
     loadNotifications();
   }, []);
 
