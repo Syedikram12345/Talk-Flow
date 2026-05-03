@@ -10,8 +10,16 @@ import env from "dotenv";
 env.config();
 
 const app = express();
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type"],
+  }),
+);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/auth", authRoutes);
@@ -117,6 +125,24 @@ app.delete("/api/delete-chat/:uniqueId", async (req, res) => {
     return res.status(500).json({ error: "Database error" });
   }
 });
+
+// Feedback end points
+
+app.post("/api/feedback-submission", async (req, res) => {
+  try {
+    const user_unique_id = req.body.user_unique_id;
+    const feedback = req.body.feedback;
+    await db.query(
+      "INSERT INTO feedback(user_unique_id , feedback) VALUES($1,$2)",
+      [user_unique_id, feedback],
+    );
+    return res.json({ message: "Feedback stored successfully" });
+  } catch (err) {
+    console.log("Error in backend feedback", err);
+    return res.status(500).json({ error: "Database error" });
+  }
+});
+
 // requests end point
 
 app.post("/api/requests", async (req, res) => {

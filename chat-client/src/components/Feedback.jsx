@@ -1,14 +1,27 @@
 import React, { useState } from "react";
+import axios from "axios";
+import getProfile from "@/utils/getProfile";
 import { toast } from "sonner";
 
 function Feedback() {
   const [input, setInput] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setInput("");
     if (input === "") return;
-    toast.success("Feedback submitted");
+    try {
+      const { uuid } = await getProfile();
+      await axios.post(
+        "http://localhost:3000/api/feedback-submission",
+        { user_unique_id: uuid, feedback: input },
+        { withCredentials: true },
+      );
+      toast.success("Feedback submitted");
+    } catch (err) {
+      console.log("Error in front end feedback", err);
+      toast.error("Something went wrong");
+    }
   }
   function feedbackChange(event) {
     const value = event.target.value;
