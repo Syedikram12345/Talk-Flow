@@ -2,17 +2,28 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
+import OAuthUi from "./OAuthUi";
 
 function SignUp() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
+  const [isMobileView, setIsMobileView] = React.useState(
+    window.innerWidth < 768,
+  );
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const check = () => setIsMobileView(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   async function handleCreate(e) {
     e.preventDefault();
-    const name = `${firstName}  ${lastName}`;
+    const name = `${firstName} ${lastName}`;
     try {
       await axios.post(
         "http://localhost:3000/auth/signUp",
@@ -28,7 +39,7 @@ function SignUp() {
 
   return (
     <div className="flex items-center justify-center bg-gray-700  w-screen h-screen ">
-      <div className=" bg-gray-800 w-[90%] h-[80%] sm:h-[80%] sm:w-[30%] rounded-3xl flex flex-col pb-6">
+      <div className=" bg-gray-800 w-[90%] h-[80%] sm:h-[80%] sm:w-[30%] rounded-3xl flex flex-col  pb-6">
         <h1 className="text-center font-extrabold text-4xl text-gray-200">
           Create account
         </h1>
@@ -97,6 +108,21 @@ function SignUp() {
           </div>
         </form>
       </div>
+      {isMobileView ? null : (
+        <div className="w-5 ml-5  h-screen flex items-center">
+          <p
+            className={`font-extrabold text-gray-300 cursor-pointer ${
+              isMobileView ? "hidden" : "block"
+            }`}
+          >
+            OR
+          </p>
+        </div>
+      )}
+
+      {/* not working ! */}
+
+      {!isMobileView && <OAuthUi isMobileView={isMobileView} />}
       <Toaster position="top-right" />
     </div>
   );

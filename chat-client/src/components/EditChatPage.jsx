@@ -15,9 +15,9 @@ function EditChatPage({ open, setOpen }) {
       <DialogContent className="sm:max-w-sm bg-gray-800 text-gray-100 border border-gray-700">
         <DialogHeader>
           <DialogTitle>Edit chat name</DialogTitle>
-          <DialogDescription>
+          {/* <DialogDescription>
             Make changes to the chat here. Click save when you're done.
-          </DialogDescription>
+          </DialogDescription> */}
         </DialogHeader>
 
         <form className="space-y-4">

@@ -2,10 +2,21 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
+import OAuthUi from "./OAuthUi";
 
 function SignIn() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [isMobileView, setIsMobileView] = React.useState(
+    window.innerWidth < 768,
+  );
+  React.useEffect(() => {
+    const check = () => setIsMobileView(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const navigate = useNavigate();
   async function handleLogin(e) {
     e.preventDefault();
@@ -67,6 +78,18 @@ function SignIn() {
           </div>
         </form>
       </div>
+      {isMobileView ? null : (
+        <div className="w-5 ml-5  h-screen flex items-center">
+          <p
+            className={`font-extrabold text-gray-300 cursor-pointer ${
+              isMobileView ? "hidden" : "block"
+            }`}
+          >
+            OR
+          </p>
+        </div>
+      )}
+      <OAuthUi isMobileView={isMobileView} />
       <Toaster position="top-right" />
     </div>
   );
